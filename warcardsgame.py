@@ -1,4 +1,11 @@
 import random
+
+def main():
+   print("Hello, let's start the WAR game")
+   get_player_names()
+   start_the_game(name1, name2)
+
+
 suits = ("H", "D", "S", "C")
 ranks = ("A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2" )
 
@@ -52,7 +59,44 @@ class Player:
 #gamer = Player("Mario")
 #print(gamer)
 
-      
+#### GAME LOGIC ####
+
+# Add the players
+def get_player_names():
+  player1 = input("Enter the name of the first player: ")
+  player2 = input("Enter the name of the second player: ")
+  return player1, player2
+
+def start_the_game(name1, name2):
+
+  # introduce the players
+
+
+  # setup the game
+
+
+  # split the deck between players
+
+
+  # check the cards number of each player
+
+
+  # announce the winner if any doesn't have cards
+
+
+  # else  print round
+  
+  
+  # check and print the top card of both players
+
+
+  # if both cards are equal, announce the war
+
+
+  # if not war, remove card from loser, add to the winner, announce the winner and print both player cards
+
+if __name__ == "__main__":
+  main()
 
   
 
