@@ -24,3 +24,4 @@ Requirements:
 6.6.2. Quit the game
    
  
+Edited readme file for test --Rokas 
