@@ -25,10 +25,10 @@ class Card:
 
 #####################
 ### REMOVE at the end
-#card1 = Card("S", "A")
-#print(card1) AH
+# card1 = Card("S", "A")
+# print(card1) AH
 
-#create a deck of cards with possibility to shuffle
+# create a deck of cards with possibility to shuffle
 class Deck:
   def __init__ (self): 
     self.all_cards = []
@@ -37,18 +37,22 @@ class Deck:
       for rank in ranks: 
         self.all_cards.append(Card(suit, rank))
 
+# shuffle cards
   def shuffle(self): 
     random.shuffle (self.all_cards)
-  
+
+# remove one card from the list of all cards  
   def deal_card(self):
         return self.cards.pop()
 
-#create a player, that removes and adds up the cards
+
+#create a player with no cards, that removes and adds up the cards
 class Player:
   def __init__(self, name): 
-    self.name = name 
+    self.name = name     
     self.player_cards = []
 
+  #remove one card from the list of player_cards from the top of the deck
   def remove_card(self):
     return self.player_cards.pop(0)
   
@@ -81,42 +85,62 @@ def start_the_game(name1, name2):
   player_two = Player(name2)
 
 
-  # setup the game
+  # create and shuffle the deck
   new_deck = Deck()
   new_deck.shuffle()
 
 
   # split the deck between players
-for i in range(len(new_deck.all_cards)/2):
-  player_one.add_cards(new_deck.deal_card())
-  player_two.add_cards(new_deck.deal_card())
+  for i in range(len(new_deck.all_cards)/2):
+    player_one.add_cards(new_deck.deal_card())
+    player_two.add_cards(new_deck.deal_card())
 
+  # start the game
+  game = True
+
+  round = 0
+
+  while game:
+    round += 1
+     
   # check the cards number of each player
   # announce the winner if any doesn't have cards
+  if len(player_one.all_cards) == 0:
+    game = False
+    print(f"{player_one.name} is out of cards")
+    print(f"{player_two.name} is the winner!")
+    print("GAME OVER")
+    sys.exit()
 
-card1 = player1.player_card.pop()
-card2 = player2.player_card.pop()
+  elif len(player_two.all_cards) == 0:
+    game = False
+    print(f"{player_two.name} is out of cards")
+    print(f"{player_one.name} is the winner!")
+    print("GAME OVER")
+    sys.exit()
 
-print(f"{player_one.name} plays: {card1}")
-print(f"{player_two.name} plays: {card2}")
+  #else game continues  
+  else:
+    print(f"{round} round:")
 
-if ranks.index(card1.rank) < ranks.index(card2.rank):
-  player_one.add_cards(card1, card2)
-  print(f"{player_one.name} wins")
-elif ranks.index(card1.rank) > ranks.index(card2.rank):
-  player_two.add_cards(card1, card2)
-  print(f"{player_two.name} wins")
+    card1 = player1.player_card.pop()
+    card2 = player2.player_card.pop()
+
+    print(f"{player_one.name} plays: {card1}")
+    print(f"{player_two.name} plays: {card2}")
+
+    if ranks.index(card1.rank) < ranks.index(card2.rank):
+      player_one.add_cards(card1, card2)
+      print(f"{player_one.name} wins the round")
+    
+    elif ranks.index(card1.rank) > ranks.index(card2.rank):
+      player_two.add_cards(card1, card2)
+      print(f"{player_two.name} wins the round")
 
 
 
 
- 
-
-
-  # else  print round
   
-  
-  # check and print the top card of both players
 
 
   # if both cards are equal, announce the war
