@@ -138,12 +138,27 @@ def start_the_game(name1, name2):
       print(f"{player_two.name} wins the round")
 
 
+  # if both cards are equal, announce the war
+    else:
+      # add 3 cards form each palyer to war_cards list
+      war_cards = []
+      for _ in range(3):
+        war_cards.append(player_one.remove_card())
+        war_cards.append(player_two.remove_card())
+
+      # continue by playing card from each player
+      war_card1 = player_one.remove_card()
+      war_card2 = player_two.remove_card()
+
+      print(f"{player_one.name} plays: {war_card1}")
+      print(f"{player_two.name} plays: {war_card2}")
+
 
 
   
 
 
-  # if both cards are equal, announce the war
+
 
 
   # if not war, remove card from loser, add to the winner, announce the winner and print both player cards
