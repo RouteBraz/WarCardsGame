@@ -1,16 +1,14 @@
 import random
 import sys
 
+suits = ("H", "D", "S", "C")
+ranks = ("A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2" )
+
 def main():
 
-  suits = ("H", "D", "S", "C")
-  ranks = ("A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2" )
-
-   print("Hello, let's start the WAR game")
-   get_player_names()
-   start_the_game(name1, name2)
-
-
+  print("Hello, let's start the WAR game")
+  name1, name2 = get_player_names()
+  start_the_game(name1, name2)
 
 
 #create a single card
@@ -21,18 +19,14 @@ class Card:
     self.rank = rank
 
   def __str__(self):
-    return f'{self.suit}{self.rank}'
+    return f"{self.rank}{self.suit}"
 
-#####################
-### REMOVE at the end
-# card1 = Card("S", "A")
-# print(card1) AH
 
 # create a deck of cards with possibility to shuffle
 class Deck:
   def __init__ (self): 
     self.all_cards = []
-
+    
     for suit in suits: 
       for rank in ranks: 
         self.all_cards.append(Card(suit, rank))
@@ -43,13 +37,13 @@ class Deck:
 
 # remove one card from the list of all cards  
   def deal_card(self):
-        return self.cards.pop()
+    return self.all_cards.pop()
 
 
 #create a player with no cards, that removes and adds up the cards
 class Player:
-  def __init__(self, name): 
-    self.name = name     
+  def __init__(self): 
+    self.name = input("Enter the name of the player: ")     
     self.player_cards = []
 
   #remove one card from the list of player_cards from the top of the deck
@@ -65,33 +59,28 @@ class Player:
   def __str__(self): 
     return f'{self.name} has {len(self.player_cards)} cards'
 
-### REMOVE at the end ########
-##############################  
-#gamer = Player("Mario")
-#print(gamer)
-
 #### GAME LOGIC ####
 
 # Add the players
 def get_player_names():
-  player1 = input("Enter the name of the first player: ")
-  player2 = input("Enter the name of the second player: ")
-  return player1, player2
+  player1 = Player()
+  player2 = Player()
+  #player1 = input("Enter the name of the first player: ")
+  #player2 = input("Enter the name of the second player: ")
+  return (player1, player2)
 
 def start_the_game(name1, name2):
 
   # introduce the players
-  player_one = Player(name1)
-  player_two = Player(name2)
-
+  player_one = name1
+  player_two = name2
 
   # create and shuffle the deck
   new_deck = Deck()
   new_deck.shuffle()
 
-
   # split the deck between players
-  for i in range(len(new_deck.all_cards)/2):
+  for i in range(len(new_deck.all_cards)//2):
     player_one.add_cards(new_deck.deal_card())
     player_two.add_cards(new_deck.deal_card())
 
@@ -105,48 +94,67 @@ def start_the_game(name1, name2):
      
   # check the cards number of each player
   # announce the winner if any doesn't have cards
-  if len(player_one.all_cards) == 0:
-    game = False
-    print(f"{player_one.name} is out of cards")
-    print(f"{player_two.name} is the winner!")
-    print("GAME OVER")
-    sys.exit()
+    if len(player_one.player_cards) == 0:
+      game = False
+      print(f"{player_one.name} is out of cards")
+      print(f"{player_two.name} is the winner!")
+      print("GAME OVER")
+      sys.exit()
 
-  elif len(player_two.all_cards) == 0:
-    game = False
-    print(f"{player_two.name} is out of cards")
-    print(f"{player_one.name} is the winner!")
-    print("GAME OVER")
-    sys.exit()
+    elif len(player_two.player_cards) == 0:
+      game = False
+      print(f"{player_two.name} is out of cards")
+      print(f"{player_one.name} is the winner!")
+      print("GAME OVER")
+      sys.exit()
 
-  #else game continues  
-  else:
-    print(f"{round} round:")
-
-    card1 = player1.player_card.pop()
-    card2 = player2.player_card.pop()
-
-    print(f"{player_one.name} plays: {card1}")
-    print(f"{player_two.name} plays: {card2}")
-
-    if ranks.index(card1.rank) < ranks.index(card2.rank):
-      player_one.add_cards(card1, card2)
-      print(f"{player_one.name} wins the round")
+    #else game continues 
+    print(f"{round} round:") 
+    player_one_cards = []
+    player_one_cards.append(player_one.remove_card())
     
-    elif ranks.index(card1.rank) > ranks.index(card2.rank):
-      player_two.add_cards(card1, card2)
-      print(f"{player_two.name} wins the round")
+    player_two_cards = []
+    player_two_cards.append(player_two.remove_card())
+   
+    war = True
 
+    while war:
+      if ranks.index(player_one_cards[-1].rank) < ranks.index(player_two_cards[-1].rank):
+        player_one.add_cards(player_one_cards)
+        player_one.add_cards(player_two_cards)
+        print(f"{player_one.name} wins the round")
+        war = False
+      
+      elif ranks.index(player_one_cards[-1].rank) > ranks.index(player_two_cards[-1].rank):
+        player_two.add_cards(player_one_cards)
+        player_two.add_cards(player_two_cards)
+        print(f"{player_two.name} wins the round")
+        war = False
+      
+      #if cards are equal:
+      else:
+        print("War!")
 
+        #check if players are able to play war
+        if len(player_one.player_cards) < 5:
+          game = False
+          print(f"{player_one.name} cannot go into the war.")
+          print(f"{player_two.name} wins!")
+          print("Game Over")
+          break
+        
+        elif len(player_two.player_cards) < 5:
+          game = False
+          print(f"{player_two.name} cannot go into the war.")
+          print(f"{player_one.name} wins!")
+          print("Game Over")
+          break
 
-
+        else:
+          for num in range(5):
+            player_one_cards.append(player_one.remove_card())
+            player_two_cards.append(player_two.remove_card())
   
-
-
-  # if both cards are equal, announce the war
-
-
-  # if not war, remove card from loser, add to the winner, announce the winner and print both player cards
 
 if __name__ == "__main__":
   main()
